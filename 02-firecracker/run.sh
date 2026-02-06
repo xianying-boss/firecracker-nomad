@@ -2,7 +2,7 @@
 set -e
 
 echo "========================================"
-echo "Step 1: Installing Firecracker"
+echo "Step 2: Installing Firecracker"
 echo "========================================"
 
 # Set version (you can change this)
