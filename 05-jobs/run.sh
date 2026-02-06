@@ -1,8 +1,10 @@
 #!/bin/bash
 set -e
 
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 echo "========================================"
-echo "Step 8: Creating Sample Firecracker Job"
+echo "Step 5: Creating Sample Firecracker Job"
 echo "========================================"
 
 echo "Creating sample job file..."
@@ -38,15 +40,19 @@ job "firecracker-example" {
 }
 EOF
 
+echo "Copying scripts and templates to /opt/firecracker..."
+mkdir -p /opt/firecracker/scripts
+mkdir -p /opt/firecracker/jobs
+cp -r "$(dirname "$SCRIPT_DIR")/scripts/"* /opt/firecracker/scripts/
+cp -r "$SCRIPT_DIR/templates/"* /opt/firecracker/jobs/
+cp "$(dirname "$SCRIPT_DIR")/README.md" /opt/firecracker/
+cp "$(dirname "$SCRIPT_DIR")/QUICKSTART.md" /opt/firecracker/
+cp "$(dirname "$SCRIPT_DIR")/TROUBLESHOOTING.md" /opt/firecracker/
+
 echo "Setting proper permissions..."
-chown nomad:nomad /opt/firecracker/firecracker-job.nomad
+chown -R nomad:nomad /opt/firecracker
 
 echo ""
 echo "✓ Sample job file created at /opt/firecracker/firecracker-job.nomad"
-echo ""
-echo "To validate the job, run:"
-echo "  nomad job validate /opt/firecracker/firecracker-job.nomad"
-echo ""
-echo "To run the job, run:"
-echo "  nomad job run /opt/firecracker/firecracker-job.nomad"
+echo "To run it: nomad job run /opt/firecracker/firecracker-job.nomad"
 echo ""
