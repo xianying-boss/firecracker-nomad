@@ -22,10 +22,10 @@ job "firecracker-example" {
       config {
         KernelImage = "/opt/firecracker/images/vmlinux.bin"
         RootDrive = "/opt/firecracker/images/rootfs.ext4"
-        
+
         Vcpus = 1
         Mem = 128
-        
+
         Network {
           device = "eth0"
         }
@@ -43,11 +43,11 @@ EOF
 echo "Copying scripts and templates to /opt/firecracker..."
 mkdir -p /opt/firecracker/scripts
 mkdir -p /opt/firecracker/jobs
-cp -r "$(dirname "$SCRIPT_DIR")/scripts/"* /opt/firecracker/scripts/
-cp -r "$SCRIPT_DIR/templates/"* /opt/firecracker/jobs/
-cp "$(dirname "$SCRIPT_DIR")/README.md" /opt/firecracker/
-cp "$(dirname "$SCRIPT_DIR")/QUICKSTART.md" /opt/firecracker/
-cp "$(dirname "$SCRIPT_DIR")/TROUBLESHOOTING.md" /opt/firecracker/
+[ -d "$(dirname "$SCRIPT_DIR")/scripts" ] && cp -r "$(dirname "$SCRIPT_DIR")/scripts/"* /opt/firecracker/scripts/
+[ -d "$SCRIPT_DIR/jobs" ] && cp -r "$SCRIPT_DIR/jobs/"* /opt/firecracker/jobs/
+[ -f "$(dirname "$SCRIPT_DIR")/README.md" ] && cp "$(dirname "$SCRIPT_DIR")/README.md" /opt/firecracker/
+[ -f "$(dirname "$SCRIPT_DIR")/QUICKSTART.md" ] && cp "$(dirname "$SCRIPT_DIR")/QUICKSTART.md" /opt/firecracker/
+[ -f "$(dirname "$SCRIPT_DIR")/TROUBLESHOOTING.md" ] && cp "$(dirname "$SCRIPT_DIR")/TROUBLESHOOTING.md" /opt/firecracker/
 
 echo "Setting proper permissions..."
 chown -R nomad:nomad /opt/firecracker

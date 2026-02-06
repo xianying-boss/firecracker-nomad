@@ -1,35 +1,29 @@
-.PHONY: all init firecracker nomad images jobs status clean help
+.PHONY: all init build-image apply deploy-jobs status help
 
-all: init firecracker nomad images jobs
-	@echo "All installation steps completed!"
+all: init build-image apply deploy-jobs
+	@echo "All steps completed!"
 
 help:
 	@echo "Available targets:"
-	@echo "  init        - Check prerequisites and setup permissions (Step 1)"
-	@echo "  firecracker - Install Firecracker binary (Step 2)"
-	@echo "  nomad       - Install and configure Nomad with Firecracker driver (Step 3)"
-	@echo "  images      - Prepare kernel and images directory (Step 4)"
-	@echo "  jobs        - Create sample Firecracker job (Step 5)"
-	@echo "  all         - Run all steps (1-5)"
-	@echo "  status      - Show monitoring commands"
+	@echo "  init         - Initialize and check prerequisites"
+	@echo "  build-image  - Install Firecracker and Nomad binaries"
+	@echo "  apply        - Start Nomad and prepare images"
+	@echo "  deploy-jobs  - Deploy sample Firecracker job"
+	@echo "  status       - Show monitoring commands"
 
 init:
-	sudo bash 01-init/run.sh
+	sudo bash init/setup.sh
 
-firecracker:
-	sudo bash 02-firecracker/run.sh
+build-image:
+	sudo bash nomad-cluster-disk-image/setup/install-firecracker.sh
+	sudo bash nomad-cluster-disk-image/setup/install-nomad.sh
 
-nomad:
-	sudo bash 03-nomad/run.sh
+apply:
+	sudo bash nomad-cluster/run-nomad.sh
+	sudo bash nomad-cluster/prepare-images.sh
 
-images:
-	sudo bash 04-images/run.sh
-
-jobs:
-	sudo bash 05-jobs/run.sh
+deploy-jobs:
+	sudo bash nomad/deploy-sample-job.sh
 
 status:
-	bash scripts/monitoring.sh
-
-clean:
-	@echo "Warning: This will not uninstall software, but will remove local build artifacts if any."
+	bash scripts/status.sh

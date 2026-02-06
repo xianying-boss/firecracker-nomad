@@ -2,15 +2,15 @@
 set -e
 
 echo "========================================"
-echo "Firecracker + Nomad Installation"
+echo "Firecracker + Nomad Cluster Installation"
 echo "========================================"
 echo ""
-echo "This script will run all installation steps using the Makefile."
+echo "This script will orchestrate the installation using the Makefile."
 echo "Press Ctrl+C to cancel, or Enter to continue..."
 read -r
 
 sudo make all
 
 echo ""
-echo "Installation complete! Please check the README.md in each directory for further details."
-echo "You can monitor your cluster with 'make status'."
+echo "Installation complete!"
+echo "Monitor your cluster with 'make status'."
